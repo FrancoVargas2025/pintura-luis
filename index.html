@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luis Vargas | Pintura Profesional</title>
+  <meta name="description" content="Pintor profesional con amplia experiencia en pintura de interiores, exteriores, techos con membrana líquida y mantenimiento edilicio. Pedí tu presupuesto sin cargo." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { DEFAULT: '#0B2545', light: '#13315C' },
+            accent: { DEFAULT: '#F97316', dark: '#EA580C' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 56px;
+      height: 4px;
+      background: #F97316;
+      border-radius: 9999px;
+      margin-top: 0.75rem;
+    }
+    .section-title.center::after { margin-left: auto; margin-right: auto; }
+    .hero-bg {
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(249,115,22,0.18), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(255,255,255,0.08), transparent 45%),
+        linear-gradient(135deg, #0B2545 0%, #13315C 100%);
+    }
+    .card-hover { transition: transform .3s ease, box-shadow .3s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(11,37,69,.25); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+
+    .ba-slider {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 300px;
+      border-radius: 1rem;
+      cursor: ew-resize;
+    }
+    .ba-slider img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .img-before {
+      z-index: 10;
+      clip-path: inset(0 50% 0 0);
+    }
+    .slider-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: white;
+      z-index: 20;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .slider-handle::after {
+      content: '↔';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      background: #F97316;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .ba-label {
+      position: absolute;
+      bottom: 10px;
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 15;
+    }
+    .label-before { left: 10px; }
+    .label-after { right: 10px; }
+
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(11, 37, 69, 0.95);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox-overlay.active { display: flex; opacity: 1; }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 30px;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .clickable-img { cursor: zoom-in; }
+
+    /* Estilos para el Modal de Testimonios */
+    #testimonialModal {
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+
+<body class="font-sans text-slate-700 bg-white antialiased">
+
+  <!-- BOTÓN WHATSAPP -->
+  <a href="https://wa.me/5492634540559?text=Hola%20Luis%2C%20quiero%20pedir%20un%20presupuesto"
+     target="_blank" rel="noopener"
+     class="fixed bottom-5 right-5 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-2xl w-14 h-14 grid place-items-center transition hover:scale-105"
+     aria-label="Escribime por WhatsApp">
+    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4c.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c.6.3 1.1.4 1.5.5a3.6 3.6 0 001.7.1 2.8 2.8 0 001.8-1.3 2.2 2.2 0 00.2-1.3c-.1-.1-.2-.2-.4-.3z"/></svg>
+  </a>
+
+  <!-- LIGHTBOX CONTAINER -->
+  <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImage" src="" class="lightbox-img" onclick="event.stopPropagation()" />
+  </div>
+
+  <!-- MODAL DE DEJAR COMENTARIO -->
+  <div id="testimonialModal" class="hidden fixed inset-0 z-[100] bg-navy/80 flex items-center justify-center p-4 transition-opacity">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 w-full max-w-md shadow-2xl relative">
+      <button onclick="closeTestimonialModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+      <h3 class="text-2xl font-extrabold text-navy mb-2">Dejá tu opinión</h3>
+      <p class="text-slate-600 text-sm mb-6">Tu comentario me ayuda a seguir mejorando. (Se enviará por WhatsApp).</p>
+      
+      <form id="testimonialForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-navy mb-1">Nombre y Apellido *</label>
+          <input type="text" name="t_nombre" required class="w-full h-12 px-4 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-accent transition" placeholder="Ej: Juan Pérez">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-navy mb-1">Teléfono *</label>
+          <input type="tel" name="t_telefono" required class="w-full h-12 px-4 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-accent transition" placeholder="Tu número">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-navy mb-1">Correo Electrónico *</label>
+          <input type="email" name="t_email" required class="w-full h-12 px-4 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-accent transition" placeholder="tu@email.com">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-navy mb-1">Tu Comentario *</label>
+          <textarea name="t_comentario" required rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-accent transition resize-none" placeholder="¿Cómo fue tu experiencia con mi trabajo?"></textarea>
+        </div>
+        <button type="submit" class="w-full h-12 mt-2 bg-navy hover:bg-navy-light text-white font-bold rounded-xl transition">
+          Enviar Comentario
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#inicio" class="flex items-center gap-2">
+  <!-- Aquí va tu imagen. Cambia 'logo-luis.png' por el nombre real de tu archivo -->
+  <img src="Logo LV2.png" alt="Logo Luis Vargas" class="w-16 h-16 object-contain" />
+  
+  <!-- Este es el texto que aparece al lado del logo (puedes borrarlo si tu imagen ya tiene el nombre escrito) -->
+  <span class="font-bold text-navy leading-tight">Luis Vargas<span class="block text-xs font-medium text-slate-500">Pintura Profesional</span></span>
+</a>
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium">
+        <a href="#por-que" class="hover:text-accent transition">Por qué elegirme</a>
+        <a href="#servicios" class="hover:text-accent transition">Servicios</a>
+        <a href="#portafolio" class="hover:text-accent transition">Trabajos</a>
+        <a href="#testimonios" class="hover:text-accent transition">Testimonios</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href="#contacto" class="hidden sm:inline-flex bg-accent hover:bg-accent-dark text-white font-semibold text-sm px-4 py-2.5 rounded-lg shadow-md transition">Pedí tu presupuesto</a>
+        <button id="menuBtn" class="md:hidden p-2 rounded-lg border border-slate-200" aria-label="Abrir menú">
+          <svg class="w-6 h-6 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white">
+      <div class="px-4 py-3 flex flex-col text-sm font-medium">
+        <a href="#por-que" class="py-3 border-b border-slate-100">Por qué elegirme</a>
+        <a href="#servicios" class="py-3 border-b border-slate-100">Servicios</a>
+        <a href="#portafolio" class="py-3 border-b border-slate-100">Trabajos</a>
+        <a href="#testimonios" class="py-3 border-b border-slate-100">Testimonios</a>
+        <a href="#contacto" class="py-3 text-accent font-semibold">Pedí tu presupuesto</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. HERO + 2. CTA -->
+    <section id="inicio" class="hero-bg text-white pt-32 pb-20 md:pt-40 md:pb-28">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="reveal inline-block bg-white/10 border border-white/20 text-sm px-3 py-1 rounded-full mb-5">Pintor profesional · Interiores, exteriores y techos</span>
+          <h1 class="reveal delay-100 text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight">Tu casa, con acabados impecables y entregados a tiempo</h1>
+          <p class="reveal delay-200 mt-6 text-base sm:text-lg text-slate-200 leading-relaxed">Soy Luis Vargas, pintor profesional con amplia experiencia en trabajos de pintura y mantenimiento edilicio. Me especializo en renovar interiores, exteriores, techos, piscinas y demas, cada proyecto empieza con una preparación cuidadosa de las superficies, porque de ahí depende que el resultado dure. Trabajo con materiales y herramientas de calidad, cuido cada detalle y dejo tu casa limpia y lista para usar, en la fecha que acordamos.</p>
+          <div class="reveal delay-300 mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+            <a href="#contacto" class="inline-flex justify-center items-center bg-accent hover:bg-accent-dark text-white font-bold text-lg px-7 py-4 rounded-xl shadow-xl shadow-orange-900/30 transition transform hover:-translate-y-0.5">Pedí tu presupuesto sin cargo</a>
+            <p class="text-sm text-slate-300">Respuesta en menos de 24 horas. Sin compromiso.</p>
+          </div>
+        </div>
+        <div class="hidden md:block reveal delay-400">
+          <div class="relative">
+            <img src="IMG_20250108_081047_519.jpg" alt="Trabajo de pintura profesional" class="rounded-2xl shadow-2xl border border-white/10 w-full object-cover" onerror="this.src='https://placehold.co/600x800/E2E8F0/0B2545?text=Foto+Perfil+Luis'"/>
+            <div class="absolute -bottom-6 -left-6 bg-white text-navy rounded-xl shadow-xl px-5 py-4">
+              <p class="text-3xl font-extrabold text-accent">24 h</p>
+              <p class="text-sm font-medium">para responder tu consulta</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. POR QUÉ ELEGIRME -->
+    <section id="por-que" class="py-20 bg-slate-50 overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mb-12 reveal">
+          <h2 class="section-title text-3xl sm:text-4xl font-extrabold text-navy">Un trabajo que se nota desde el primer día</h2>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="reveal card-hover bg-white rounded-2xl p-7 border border-slate-200">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 text-accent grid place-items-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="font-bold text-navy text-lg mb-2">Todo impecable, siempre.</h3>
+            <p class="text-slate-600 leading-relaxed">Dejo el lugar limpio y ordenado al terminar. Tu casa queda lista para usar, no con restos de obra.</p>
+          </article>
+          <article class="reveal delay-100 card-hover bg-white rounded-2xl p-7 border border-slate-200">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 text-accent grid place-items-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <h3 class="font-bold text-navy text-lg mb-2">Cumplo los plazos.</h3>
+            <p class="text-slate-600 leading-relaxed">Acordamos fecha y la respeto. Sé que tu tiempo y tu comodidad importan.</p>
+          </article>
+          <article class="reveal delay-200 card-hover bg-white rounded-2xl p-7 border border-slate-200">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 text-accent grid place-items-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7 3h10l4 4v10l-4 4H7l-4-4V7z"/></svg>
+            </div>
+            <h3 class="font-bold text-navy text-lg mb-2">Conocimiento técnico real.</h3>
+            <p class="text-slate-600 leading-relaxed">Diagnostico el estado de cada superficie antes de pintar y elijo el sistema adecuado para que el resultado dure.</p>
+          </article>
+          <article class="reveal delay-300 card-hover bg-white rounded-2xl p-7 border border-slate-200">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 text-accent grid place-items-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-2.5z"/></svg>
+            </div>
+            <h3 class="font-bold text-navy text-lg mb-2">Herramientas y método.</h3>
+            <p class="text-slate-600 leading-relaxed">Trabajo con equipos profesionales que me permiten terminaciones prolijas y aplicaciones eficientes.</p>
+          </article>
+          <article class="reveal delay-400 card-hover bg-white rounded-2xl p-7 border border-slate-200">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 text-accent grid place-items-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="font-bold text-navy text-lg mb-2">Calidad que se mantiene.</h3>
+            <p class="text-slate-600 leading-relaxed">Mi compromiso no termina cuando me voy. Si algo no queda como debía, lo corrijo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SERVICIOS -->
+    <section id="servicios" class="py-20 bg-white overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mx-auto text-center mb-12 reveal">
+          <h2 class="section-title center text-3xl sm:text-4xl font-extrabold text-navy">Soluciones completas para tu casa</h2>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="reveal card-hover rounded-2xl border border-slate-200 p-7 bg-white">
+            <h3 class="font-bold text-navy text-lg mb-2">Pintura de interiores</h3>
+            <p class="text-slate-600 leading-relaxed">Renovación de ambientes con acabados uniformes, prolijos y duraderos.</p>
+          </div>
+          <div class="reveal delay-100 card-hover rounded-2xl border border-slate-200 p-7 bg-white">
+            <h3 class="font-bold text-navy text-lg mb-2">Pintura de exteriores</h3>
+            <p class="text-slate-600 leading-relaxed">Protección y embellecimiento de fachadas, frentes y muros, resistentes al clima.</p>
+          </div>
+          <div class="reveal delay-200 card-hover rounded-2xl border border-slate-200 p-7 bg-white">
+            <h3 class="font-bold text-navy text-lg mb-2">Techos y membrana líquida</h3>
+            <p class="text-slate-600 leading-relaxed">Impermeabilización y renovación de techos que dejan de filtrar y recuperan su aspecto.</p>
+          </div>
+          <div class="reveal delay-300 card-hover rounded-2xl border border-slate-200 p-7 bg-white">
+            <h3 class="font-bold text-navy text-lg mb-2">Preparación de superficies</h3>
+            <p class="text-slate-600 leading-relaxed">Lijado, enduido, reparación de fisuras y tratamiento previo. Es la base de cualquier buen resultado.</p>
+          </div>
+          <div class="reveal delay-400 card-hover rounded-2xl border border-slate-200 p-7 bg-white md:col-span-2 lg:col-span-1">
+            <h3 class="font-bold text-navy text-lg mb-2">Mantenimiento edilicio</h3>
+            <p class="text-slate-600 leading-relaxed">Pequeñas y medianas reparaciones para que tu propiedad se mantenga en buen estado.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PORTAFOLIO MODIFICADO -->
+    <section id="portafolio" class="py-20 bg-slate-50 overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mx-auto text-center mb-12 reveal">
+          <h2 class="section-title center text-3xl sm:text-4xl font-extrabold text-navy">Mis trabajos hablan por mí</h2>
+          <p class="mt-6 text-slate-600 leading-relaxed">Deslizá sobre la imagen para ver el cambio real. Hacé clic en las fotos de abajo para ampliarlas.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <figure class="reveal card-hover bg-white rounded-2xl overflow-hidden border border-slate-200 lg:col-span-2 shadow-sm">
+            <div class="ba-slider" id="slider1">
+              <img src="IMG_20250110_143724_749.jpg" alt="Después del trabajo" onerror="this.src='https://placehold.co/800x400/13315C/FFFFFF?text=FOTO+DESPUES'"/>
+              <span class="ba-label label-after">Después</span>
+              <img src="Gemini_Generated_Image_2sgsyp2sgsyp2sgs.jfif" alt="Antes del trabajo" class="img-before" id="img-before-1"/>
+              <span class="ba-label label-before">Antes</span>
+              <div class="slider-handle" id="handle1"></div>
+            </div>
+            <figcaption class="p-5 text-sm text-slate-600">
+              <span class="font-semibold text-navy block text-base">Transformación Total</span>
+              Deslizá la barra central para comparar el estado previo a la preparación y el acabado final.
+            </figcaption>
+          </figure>
+          
+          <figure class="reveal delay-100 card-hover bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+            <img src="IMG_20250107_141837_576.jpg" alt="Impermeabilización de techo" class="w-full h-56 object-cover clickable-img" onclick="openLightbox(this.src)" />
+            <figcaption class="p-5 text-sm text-slate-600"><span class="font-semibold text-navy block">Fachada Interior</span>Aplicando Pintura latex</figcaption>
+          </figure>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <figure class="reveal delay-200 card-hover bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+            <img src="3.jfif" alt="Pintura de fachada exterior" class="w-full h-56 object-cover clickable-img" onclick="openLightbox(this.src)" />
+            <figcaption class="p-5 text-sm text-slate-600"><span class="font-semibold text-navy block">Interior Renovado</span>Renovación estética de interiores</figcaption>
+          </figure>
+          <figure class="reveal delay-300 card-hover bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+            <img src="2.jfif" alt="Dormitorio renovado" class="w-full h-56 object-cover clickable-img" onclick="openLightbox(this.src)" />
+            <figcaption class="p-5 text-sm text-slate-600"><span class="font-semibold text-navy block">Renovación de exterior</span>Acabado uniforme y prolijo</figcaption>
+          </figure>
+          <figure class="reveal delay-400 card-hover bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+            <img src="IMG_20250107_141812_060.jpg" alt="Reparación de fisuras" class="w-full h-56 object-cover clickable-img" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/600x450/E2E8F0/0B2545?text=Foto+5'" />
+            <figcaption class="p-5 text-sm text-slate-600"><span class="font-semibold text-navy block">Preparación y enduido</span>Base lista para pintar</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TESTIMONIOS -->
+    <section id="testimonios" class="py-20 bg-navy text-white overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mx-auto text-center mb-12 reveal">
+          <h2 class="section-title center text-3xl sm:text-4xl font-extrabold">Lo que dicen mis clientes</h2>
+          <!-- NUEVO BOTÓN PARA DEJAR COMENTARIO -->
+          <button onclick="openTestimonialModal()" class="mt-6 inline-flex justify-center items-center bg-white text-navy hover:bg-slate-100 font-bold px-6 py-2.5 rounded-xl shadow-lg transition">
+            Dejar mi comentario
+          </button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <blockquote class="reveal delay-100 bg-white/5 border border-white/10 rounded-2xl p-8">
+            <p class="text-lg leading-relaxed text-slate-100">"Luis llegó puntual, protegió todos los muebles y dejó la casa mejor de lo que la encontró. Los acabados son perfectos y no quedó ni una mancha de pintura. Lo recomiendo sin dudar."</p>
+            <footer class="mt-6 flex items-center gap-3">
+              <span class="w-11 h-11 rounded-full bg-accent grid place-items-center font-bold text-white">MS</span>
+              <span class="font-semibold">María S.<span class="block text-sm font-normal text-slate-300">Propietaria de casa en San Martin</span></span>
+            </footer>
+          </blockquote>
+          <blockquote class="reveal delay-200 bg-white/5 border border-white/10 rounded-2xl p-8">
+            <p class="text-lg leading-relaxed text-slate-100">"Tenía un techo que filtraba cada vez que llovía. Luis me explicó el problema, aplicó la membrana líquida y cumplió con el plazo exacto. Dos inviernos después, sigo sin goteras."</p>
+            <footer class="mt-6 flex items-center gap-3">
+              <span class="w-11 h-11 rounded-full bg-accent grid place-items-center font-bold text-white">JR</span>
+              <span class="font-semibold">Javier R.<span class="block text-sm font-normal text-slate-300">Propietario de casa en Buen Orden</span></span>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FORMULARIO DE CONTACTO -->
+    <section id="contacto" class="py-20 bg-white overflow-hidden">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 grid lg:grid-cols-5 gap-10">
+        <div class="lg:col-span-2 reveal">
+          <h2 class="section-title text-3xl font-extrabold text-navy">Contame tu proyecto y te respondo en menos de 24 horas</h2>
+          <p class="mt-6 text-slate-600 leading-relaxed">Completá el formulario y coordinamos una visita sin cargo para evaluar tu proyecto.</p>
+          <ul class="mt-8 space-y-4 text-slate-700">
+            <li class="flex gap-3"><span class="text-accent font-bold">✓</span> Visita y presupuesto sin cargo</li>
+            <li class="flex gap-3"><span class="text-accent font-bold">✓</span> Respuesta en menos de 24 horas</li>
+            <li class="flex gap-3"><span class="text-accent font-bold">✓</span> Sin compromiso</li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-3 reveal delay-200">
+          <form id="contactForm" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm space-y-6">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label for="nombre" class="block text-sm font-semibold text-navy mb-2">Nombre completo <span class="text-accent">*</span></label>
+                <input id="nombre" name="nombre" type="text" required class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition" placeholder="Ej.: María González" />
+              </div>
+              <div>
+                <label for="telefono" class="block text-sm font-semibold text-navy mb-2">Teléfono o WhatsApp <span class="text-accent">*</span></label>
+                <input id="telefono" name="telefono" type="tel" required class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition" placeholder="Ej.: 263 458 1365" />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-semibold text-navy mb-2">Correo electrónico <span class="text-slate-400 font-normal">(opcional)</span></label>
+                <input id="email" name="email" type="email" class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition" placeholder="tu@correo.com" />
+              </div>
+              <div>
+                <label for="tipo" class="block text-sm font-semibold text-navy mb-2">Tipo de trabajo</label>
+                <select id="tipo" name="tipo" class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition">
+                  <option value="">Seleccioná una opción</option>
+                  <option>Interior</option>
+                  <option>Exterior</option>
+                  <option>Techo / membrana líquida</option>
+                  <option>Mantenimiento</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div>
+                <label for="ubicacion" class="block text-sm font-semibold text-navy mb-2">Ubicación o barrio</label>
+                <input id="ubicacion" name="ubicacion" type="text" class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition" placeholder="Ej.: Zona Este" />
+              </div>
+              <div>
+                <label for="metros" class="block text-sm font-semibold text-navy mb-2">Metros cuadrados aproximados <span class="text-slate-400 font-normal">(opcional)</span></label>
+                <input id="metros" name="metros" type="number" min="1" class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition" placeholder="Ej.: 80" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="fecha" class="block text-sm font-semibold text-navy mb-2">Fecha deseada de inicio <span class="text-slate-400 font-normal">(opcional)</span></label>
+                <input id="fecha" name="fecha" type="date" class="w-full h-14 px-5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="descripcion" class="block text-sm font-semibold text-navy mb-2">Descripción breve del proyecto <span class="text-slate-400 font-normal">(opcional)</span></label>
+                <textarea id="descripcion" name="descripcion" rows="4" class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-accent transition resize-y" placeholder="Contame qué necesitás pintar o reparar..."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="w-full h-16 bg-accent hover:bg-accent-dark text-white text-lg font-extrabold rounded-2xl shadow-xl shadow-orange-300/50 transition transform hover:-translate-y-0.5 active:translate-y-0">
+              Quiero mi presupuesto →
+            </button>
+            <p class="text-center text-xs text-slate-500">Respuesta en menos de 24 horas. Sin compromiso.</p>
+            <div id="successMsg" class="hidden mt-4 rounded-xl bg-green-50 border border-green-200 text-green-800 p-5 text-center font-medium">
+              ¡Gracias! Tu consulta se preparó para WhatsApp.
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 py-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+      <p><span class="font-bold text-white">Luis Vargas</span> · Pintura Profesional</p>
+      <p>© <span id="year"></span> Luis Vargas. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+  // ==========================================
+  // MENÚ MÓVIL Y AÑO AUTOMÁTICO
+  // ==========================================
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ==========================================
+  // NUEVO: ANIMACIONES SCROLL REVEAL
+  // ==========================================
+  document.addEventListener('DOMContentLoaded', function() {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15 
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target); 
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      observer.observe(el);
+    });
+  });
+
+  // ==========================================
+  // LÓGICA DEL SLIDER ANTES Y DESPUÉS
+  // ==========================================
+  const slider = document.getElementById('slider1');
+  const imgBefore = document.getElementById('img-before-1');
+  const handle = document.getElementById('handle1');
+  let isDragging = false;
+
+  function updateSliderPosition(e) {
+    if (!isDragging) return;
+    const sliderRect = slider.getBoundingClientRect();
+    let x = e.clientX || e.touches[0].clientX;
+    x = x - sliderRect.left;
+    let percent = (x / sliderRect.width) * 100;
+    if(percent < 0) percent = 0;
+    if(percent > 100) percent = 100;
+    imgBefore.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+    handle.style.left = `${percent}%`;
+  }
+  slider.addEventListener('mousedown', () => isDragging = true);
+  window.addEventListener('mouseup', () => isDragging = false);
+  window.addEventListener('mousemove', updateSliderPosition);
+  slider.addEventListener('touchstart', () => isDragging = true);
+  window.addEventListener('touchend', () => isDragging = false);
+  window.addEventListener('touchmove', (e) => {
+    if(isDragging) e.preventDefault();
+    updateSliderPosition(e);
+  });
+
+  // ==========================================
+  // LÓGICA DEL LIGHTBOX (GALERÍA AMPLIADA)
+  // ==========================================
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImage');
+
+  function openLightbox(imageSrc) {
+    lightboxImg.src = imageSrc;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+  document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") closeLightbox();
+  });
+
+  // ==========================================
+  // LÓGICA DEL MODAL DE TESTIMONIOS (NUEVO)
+  // ==========================================
+  const testimonialModal = document.getElementById('testimonialModal');
+  const testimonialForm = document.getElementById('testimonialForm');
+
+  function openTestimonialModal() {
+    testimonialModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeTestimonialModal() {
+    testimonialModal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Cerrar modal si hacen click fuera de la caja blanca
+  testimonialModal.addEventListener('click', function(e) {
+    if(e.target === testimonialModal) {
+      closeTestimonialModal();
+    }
+  });
+
+  // ==========================================
+  // CONFIGURACIÓN WHATSAPP (AMBOS FORMULARIOS)
+  // ==========================================
+  const WHATSAPP_NUMBER = '5492634540559'; // Tu número
+
+  // Formulario Principal (Contacto)
+  const form = document.getElementById('contactForm');
+  const successMsg = document.getElementById('successMsg');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const get = (key) => (data.get(key) || '').toString().trim() || '-';
+    const mensaje = [
+      '¡Hola Luis! Quiero pedir mi presupuesto.',
+      '',
+      `*Nombre:* ${get('nombre')}`,
+      `*Teléfono:* ${get('telefono')}`,
+      `*Correo:* ${get('email')}`,
+      `*Tipo de trabajo:* ${get('tipo')}`,
+      `*Ubicación:* ${get('ubicacion')}`,
+      `*Metros cuadrados:* ${get('metros')}`,
+      `*Fecha deseada:* ${get('fecha')}`,
+      `*Descripción:* ${get('descripcion')}`
+    ].join('\n');
+
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    successMsg.classList.remove('hidden');
+    form.reset();
+  });
+
+  // Formulario de Testimonios
+  testimonialForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(testimonialForm);
+    const get = (key) => (data.get(key) || '').toString().trim();
+    
+    const mensajeTestimonio = [
+      '¡Hola Luis! Te dejo mi comentario sobre tu trabajo:',
+      '',
+      `*Nombre:* ${get('t_nombre')}`,
+      `*Teléfono:* ${get('t_telefono')}`,
+      `*Correo:* ${get('t_email')}`,
+      '',
+      `*Mi Comentario:*`,
+      `"${get('t_comentario')}"`
+    ].join('\n');
+
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeTestimonio)}`, '_blank');
+    closeTestimonialModal();
+    testimonialForm.reset();
+  });
+</script>
+
+</body>
+</html>
